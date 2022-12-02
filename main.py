@@ -71,17 +71,28 @@ class Input(CIPHER):
         pass
 
 
-class reverse(CIPHER):
+class reverse(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
+        encrypted_cipher = ''
+        i = len(text) - 1
 
-    def encrypt_reverse(self):
-        message = self.msg
-        translated = ''
-        i = len(message)
-
-        while i > 0:
-            translated += message[i]
+        while i >= 0:
+            encrypted_cipher += text[i]
             i -= 1
-        return translated
+        return encrypted_cipher
+
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        decrypted_cipher = ''
+        i = len(text) - 1
+
+        while i >= 0:
+            decrypted_cipher += text[i]
+            i -= 1
+        return decrypted_cipher
 
 
 class ceaser(CIPHER):
