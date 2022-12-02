@@ -1,6 +1,7 @@
-import pyperclip
 import math
 from string import ascii_lowercase
+import base64
+from art import *
 
 
 class CIPHER():
