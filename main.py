@@ -288,3 +288,66 @@ class rot13(ceaser):
             else:
                 decrypted_cipher += ' '
         return decrypted_cipher
+
+
+class sms(Input):
+    keypad = {
+        1: ' ', 2: 'abc', 3: 'def', 4: 'ghi', 5: 'jkl', 6: 'mno', 7: 'pqrs', 8: 'tuv', 9: 'wxyz'
+    }
+
+    def encrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        encrypted_cipher = ''
+        for i in range(len(text)):
+            for j in self.keypad:
+                for x in range(len(self.keypad[j])):
+                    if text[i] == self.keypad[j][x]:
+                        for temp in range(x + 1):
+                            encrypted_cipher += str(j)
+        return encrypted_cipher
+
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        decrypted_cipher = ''
+        count = 0
+        for i in range(len(text)):
+            for j in self.keypad:
+                if j != 7 and j != 9:
+                    if int(text[i]) == j:
+                        if i == len(text) - 1:
+                            if int(text[i]) == j and count < 2:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                        else:
+                            if int(text[i + 1]) == j and count < 2:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                    else:
+                        continue
+                else:
+                    if int(text[i]) == j:
+                        if i == len(text) - 1:
+                            if int(text[i]) == j and count < 3:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                        else:
+                            if int(text[i + 1]) == j and count < 3:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                    else:
+                        continue
+        return decrypted_cipher
