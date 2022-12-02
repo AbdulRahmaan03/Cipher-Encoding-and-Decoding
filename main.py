@@ -12,6 +12,65 @@ class CIPHER():
     def encrypt
 
 
+class Input(CIPHER):
+    def encrypt_input(self):
+        if type == 1:
+            msg = input("Enter your text to encrypt: ")
+            super().__init__(msg.lower(), '')
+        elif type == 2:
+            with open("input.txt", 'r') as infile:
+                temp = []
+                for line in infile:
+                    if line.startswith('#'):
+                        continue
+                    else:
+                        temp.append(line.strip('\n'))
+                        msg = temp[0]
+                        super().__init__(msg.lower(), '')
+        else:
+            error()
+
+    def decrypt_input(self):
+        if type == 1:
+            msg = input("Enter your cipher to decrypt: ")
+            super().__init__(msg.lower(), '')
+        elif type == 2:
+            with open("input.txt", 'r') as infile:
+                temp = []
+                for line in infile:
+                    if line.startswith('#'):
+                        continue
+                    else:
+                        temp.append(line.strip('\n'))
+                        msg = temp[0]
+                        super().__init__(msg.lower(), '')
+        else:
+            error()
+
+    def shift_input(self):
+        if type == 1:
+            shift = input("Enter the shift/key: ")
+            super().__init__(self.msg, int(shift))
+        elif type == 2:
+            with open("input.txt", 'r') as infile:
+                temp = []
+                for line in infile:
+                    if line.startswith('#'):
+                        continue
+                    else:
+                        temp.append(line.strip('\n'))
+                        shift = temp[1]
+                        super().__init__(self.msg, int(shift))
+        else:
+            error()
+
+    def encrypt(self):
+        pass
+
+    def decrypt(self):
+        pass
+
+
 class reverse(CIPHER):
 
     def encrypt_reverse(self):
