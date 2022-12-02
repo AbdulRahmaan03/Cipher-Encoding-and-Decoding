@@ -198,26 +198,23 @@ class affine(Input):
         return decrypted_cipher
 
 
-class base64(CIPHER):
+class basesixfour(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
 
-    def base64(self):
-        import base64
-
-        sample_string = "GeeksForGeeks is the best"
-        sample_string_bytes = sample_string.encode("ascii")
-
+        sample_string_bytes = text.encode("ascii")
         base64_bytes = base64.b64encode(sample_string_bytes)
-        base64_string = base64_bytes.decode("ascii")
+        encrypted_cipher = base64_bytes.decode("ascii")
+        return encrypted_cipher
 
-        print(f"Encoded string: {base64_string}")
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
 
-        base64_string = " R2Vla3NGb3JHZWVrcyBpcyB0aGUgYmVzdA =="
-        base64_bytes = base64_string.encode("ascii")
-
-        sample_string_bytes = base64.b64decode(base64_bytes)
-        sample_string = sample_string_bytes.decode("ascii")
-
-        print(f"Decoded string: {sample_string}")
+        sample_string_bytes = base64.b64decode(text)
+        decrypted_cipher = sample_string_bytes.decode("ascii")
+        return decrypted_cipher
 
 
 class transposition(CIPHER):
