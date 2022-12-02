@@ -4,12 +4,10 @@ import base64
 from art import *
 
 
-class CIPHER():
-    def __init__(self, msg, shift_pattern):
+class CIPHER:
+    def __init__(self, msg, shift):
         self.msg = msg
-        self.shift_pattern = shift_pattern
-
-    def encrypt
+        self.shift = shift
 
 
 class Input(CIPHER):
@@ -95,45 +93,37 @@ class reverse(Input):
         return decrypted_cipher
 
 
-class ceaser(CIPHER):
-
-    def encrypt_ceaser_cipher(self, text, s):
-        result = ""
-        # transverse the plain text
-        for i in range(len(text)):
-            char = text[i]
-            # Encrypt uppercase characters in plain text
-
-            if (char.isupper()):
-                result += chr((ord(char) + s - 65) % 26 + 65)
-            # Encrypt lowercase characters in plain text
+class ceaser(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
+        encrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr((ord(char) + key - 97) % 26 + 97)
             else:
-                result += chr((ord(char) + s - 97) % 26 + 97)
-        return result
+                encrypted_cipher += ' '
+        return encrypted_cipher
 
-    # # check the above function
-    # text = "CEASER CIPHER DEMO"
-    # s = 4
-    #
-    # print("Plain Text : " + text)
-    # print("Shift pattern : " + str(s))
-    # print("Cipher: " + ceaser_cipher(text, s))
-
-    def decrypt_ceaser_cipher(self, message, LETTERS):
-        for key in range(len(LETTERS)):
-            translated = ''
-            for symbol in message:
-                if symbol in LETTERS:
-                    num = LETTERS.find(symbol)
-                    num = num - key
-                    if num < 0:
-                        num = num + len(LETTERS)
-                    translated = translated + LETTERS[num]
-                else:
-                    translated = translated + symbol
-            print('Hacking key #%s: %s' % (key, translated))
-
-    # decrypt_ceaser_cipher('GIEWIVrGMTLIVrHIQS','ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    def decrypt(self):
+        self.decrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
+        decrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                for t1, t2 in enumerate(ascii_lowercase):
+                    temp = (t1 + key) % 26
+                    if (ord(char) - 97) == temp:
+                        decrypted_cipher += t2
+                    else:
+                        continue
+            else:
+                decrypted_cipher += ' '
+        return decrypted_cipher
 
 
 class multiplication(CIPHER):
