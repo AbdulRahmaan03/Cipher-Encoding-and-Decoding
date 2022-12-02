@@ -217,33 +217,43 @@ class basesixfour(Input):
         return decrypted_cipher
 
 
-class transposition(CIPHER):
-
-    def encryptMessage(self, key, message):
-        ciphertext = [''] * key
-
+class transposition(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
+        encrypted_cipher = [''] * key
         for col in range(key):
-            position = col
-            while position < len(message):
-                ciphertext[col] += message[position]
-                position += key
-        return ''.join(ciphertext)  # Cipher text
+            pointer = col
+            while pointer < len(text):
+                encrypted_cipher[col] += text[pointer]
+                pointer += key
+        return ''.join(encrypted_cipher)
 
-    def decryptMessage(self, key, message):
-        numOfColumns = math.ceil(len(message) / key)
+    def decrypt(self):
+        self.decrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
 
-        numOfRows = key
-
-        numOfShadedBoxes = (numOfColumns * numOfRows) - len(message)
-
-        plaintext = [''] * numOfColumns
-
+        numCols = math.ceil(len(text) / key)
+        numRows = key
+        numShadedBoxes = (numCols * numRows) - len(text)
+        decrypted_cipher = [""] * numCols
         col = 0
         row = 0
-        for symbol in message:
-            plaintext[col] += symbol
-            col += 1  # point to next column
-            if (col == numOfColumns) or (col == numOfColumns - 1 and row >= numOfRows - numOfShadedBoxes):
+
+        for symbol in text:
+            decrypted_cipher[col] += symbol
+            col += 1
+
+            if (
+                    (col == numCols)
+                    or (col == numCols - 1)
+                    and (row >= numRows - numShadedBoxes)
+            ):
                 col = 0
                 row += 1
-        return ''.join(plaintext)
+
+        return ''.join(decrypted_cipher)
