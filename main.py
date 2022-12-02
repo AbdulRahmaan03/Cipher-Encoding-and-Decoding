@@ -160,34 +160,42 @@ class multiplicative(Input):
         return decrypted_cipher
 
 
-class affine(CIPHER):
+class affine(Input):
+    def shift_input(self):
+        shift = int(input("Enter the first key: "))
+        return shift
 
-    def affine(self):
-        class Affine(object):
-            DIE = 128
-            KEY = (7, 3, 55)
+    def two_shift_input(self):
+        shift = int(input("Enter the second key: "))
+        return shift
 
-            def __init__(self):
-                pass
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
+        key1 = self.shift_input()
+        key2 = self.two_shift_input()
+        encrypted_cipher = ''
 
-            def encryptChar(self, char):
-                K1, K2, kI = self.KEY
-                return chr((K1 * ord(char) + K2) % self.DIE)
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr((key1 * ord(char) + key2) % 26)
+            else:
+                encrypted_cipher += ' '
+        return encrypted_cipher
 
-            def encrypt(self, string):
-                return "".join(map(self.encryptChar, string))
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        key2 = self.two_shift_input()
+        key3 = pow(key2, -1, 26)
+        decrypted_cipher = ''
 
-            def decryptChar(self, char):
-                K1, K2, KI = self.KEY
-                return chr(KI * (ord(char) - K2) % self.DIE)
-
-            def decrypt(self, string):
-                return "".join(map(self.decryptChar, string))
-
-        affine = Affine()
-
-        # print(affine.encrypt('Affine Cipher'))
-        # print(affine.decrypt('*18?FMT'))
+        for char in text:
+            if char != ' ':
+                decrypted_cipher += chr((key3 * ord(char) - key2) % 26)
+            else:
+                decrypted_cipher += ' '
+        return decrypted_cipher
 
 
 class base64(CIPHER):
