@@ -257,3 +257,34 @@ class transposition(Input):
                 row += 1
 
         return ''.join(decrypted_cipher)
+
+
+class rot13(ceaser):
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
+        key = 13
+        encrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr((ord(char) + key - 97) % 26 + 97)
+            else:
+                encrypted_cipher += ' '
+        return encrypted_cipher
+
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        key = 13
+        decrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                for t1, t2 in enumerate(ascii_lowercase):
+                    temp = (t1 + key) % 26
+                    if (ord(char) - 97) == temp:
+                        decrypted_cipher += t2
+                    else:
+                        continue
+            else:
+                decrypted_cipher += ' '
+        return decrypted_cipher
