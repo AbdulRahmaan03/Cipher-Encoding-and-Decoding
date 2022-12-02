@@ -351,3 +351,58 @@ class sms(Input):
                     else:
                         continue
         return decrypted_cipher
+
+
+def type_input():
+    global type
+    print("""Select your input type:
+          1. CLI
+          2. Using files""")
+    type = int(input("Select your choice(1 or 2): "))
+
+
+global type
+
+
+def selection():
+    print("""Select if you want to encrypt/decrypt: 
+          1. Encrypt
+          2. Decrypt""")
+    select = int(input("Enter your choice(1 or 2): "))
+    return select
+
+
+def error():
+    print("Incorrect selection")
+
+
+def encrypt_print(text):
+    if type == 1:
+        print("Encrypted String: " + text)
+    elif type == 2:
+        with open("output.txt", 'w') as outfile:
+            outfile.write("Encrypted String: " + text)
+            outfile.close()
+    else:
+        error()
+
+
+def decrypt_print(text):
+    if type == 1:
+        print("Decrypted String: " + text)
+    elif type == 2:
+        with open("output.txt", 'w') as outfile:
+            outfile.write("Decrypted String: " + text)
+            outfile.close()
+    else:
+        error()
+
+
+def run(temp):
+    select = selection()
+    if select == 1:
+        encrypt_print(temp.encrypt())
+    elif select == 2:
+        decrypt_print(temp.decrypt())
+    else:
+        error()
