@@ -406,3 +406,62 @@ def run(temp):
         decrypt_print(temp.decrypt())
     else:
         error()
+
+
+def __main__():
+    type_input()
+    print("""Select any one of the following ciphers:
+          1. Reverse cipher
+          2. Ceaser cipher
+          3. Multiplicative cipher
+          4. Affine cipher
+          5. Base64 cipher
+          6. Transposition cipher
+          7. Rot13 cipher
+          8. SMS Phone Tap cipher
+          9. Exit""")
+    choice = int(input("Enter your choice(1 - 8): "))
+
+    while choice != 9:
+        match choice:
+            case 1:
+                temp = reverse('', '')
+                run(temp)
+            case 2:
+                temp = ceaser('', '')
+                run(temp)
+            case 3:
+                temp = multiplicative('', '')
+                run(temp)
+            case 4:
+                temp = affine('', '')
+                run(temp)
+            case 5:
+                temp = basesixfour('', '')
+                run(temp)
+            case 6:
+                temp = transposition('', '')
+                run(temp)
+            case 7:
+                temp = rot13('', '')
+                run(temp)
+            case 8:
+                temp = sms('', '')
+                run(temp)
+            case _:
+                error()
+
+        print("""Select any one of the following ciphers:
+                  1. Reverse cipher
+                  2. Ceaser cipher
+                  3. Multiplicative cipher
+                  4. Affine cipher
+                  5. Base64 cipher
+                  6. Transposition cipher
+                  7. Rot13 cipher
+                  8. SMS Phone Tap cipher
+                  9. Exit""")
+        choice = int(input("Enter your choice(1 - 8): "))
+
+
+__main__()
