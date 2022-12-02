@@ -409,6 +409,9 @@ def run(temp):
 
 
 def __main__():
+    logo = text2art("E N I G M A", font="tarty1")
+    print(logo)
+
     type_input()
     print("""Select any one of the following ciphers:
           1. Reverse cipher
