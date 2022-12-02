@@ -126,28 +126,32 @@ class ceaser(Input):
         return decrypted_cipher
 
 
-class multiplication(CIPHER):
-
-    def encrypt_multiplicative(self, key, cipher):
-        cipher = cipher.lower()
+class multiplicative(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
         encrypted_cipher = ''
-        for a in cipher:
-            if a != ' ':
-                temp = ((ord(a) - 97) * key) % 26
-                encrypted_cipher += chr(temp + 97)
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr(((ord(char) - 97) * key) % 26 + 97)
             else:
                 encrypted_cipher += ' '
         return encrypted_cipher
 
-    def decrypt_multiplicative(self, key, cipher):
-        cipher = cipher.lower()
+    def decrypt(self):
+        self.decrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
         decrypted_cipher = ''
 
-        for a in cipher:
-            if a != ' ':
+        for char in text:
+            if char != ' ':
                 for t1, t2 in enumerate(ascii_lowercase):
                     temp = (t1 * key) % 26
-                    if (ord(a) - 97) == temp:
+                    if (ord(char) - 97) == temp:
                         decrypted_cipher += t2
                     else:
                         continue
