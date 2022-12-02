@@ -1,92 +1,123 @@
-import pyperclip
 import math
 from string import ascii_lowercase
+import base64
+from art import *
 
 
-class CIPHER():
-    def __init__(self, msg, shift_pattern):
+class CIPHER:
+    def __init__(self, msg, shift):
         self.msg = msg
-        self.shift_pattern = shift_pattern
-
-    def encrypt
+        self.shift = shift
 
 
-class reverse(CIPHER):
+class Input(CIPHER):
+    def encrypt_input(self):
+        if type == 1:
+            msg = input("Enter your text to encrypt: ")
+            super().__init__(msg.lower(), '')
+        elif type == 2:
+            with open("input.txt", 'r') as infile:
+                temp = []
+                for line in infile:
+                    if line.startswith('#'):
+                        continue
+                    else:
+                        temp.append(line.strip('\n'))
+                        msg = temp[0]
+                        super().__init__(msg.lower(), '')
+        else:
+            error()
 
-    def encrypt_reverse(self):
-        message = self.msg
-        translated = ''
-        i = len(message)
+    def decrypt_input(self):
+        if type == 1:
+            msg = input("Enter your cipher to decrypt: ")
+            super().__init__(msg.lower(), '')
+        elif type == 2:
+            with open("input.txt", 'r') as infile:
+                temp = []
+                for line in infile:
+                    if line.startswith('#'):
+                        continue
+                    else:
+                        temp.append(line.strip('\n'))
+                        msg = temp[0]
+                        super().__init__(msg.lower(), '')
+        else:
+            error()
 
-        while i > 0:
-            translated += message[i]
-            i -= 1
-        return translated
+    def shift_input(self):
+        if type == 1:
+            shift = input("Enter the shift/key: ")
+            super().__init__(self.msg, int(shift))
+        elif type == 2:
+            with open("input.txt", 'r') as infile:
+                temp = []
+                for line in infile:
+                    if line.startswith('#'):
+                        continue
+                    else:
+                        temp.append(line.strip('\n'))
+                        shift = temp[1]
+                        super().__init__(self.msg, int(shift))
+        else:
+            error()
 
+    def encrypt(self):
+        pass
 
-class ceaser(CIPHER):
-
-    def encrypt_ceaser_cipher(self, text, s):
-        result = ""
-        # transverse the plain text
-        for i in range(len(text)):
-            char = text[i]
-            # Encrypt uppercase characters in plain text
-
-            if (char.isupper()):
-                result += chr((ord(char) + s - 65) % 26 + 65)
-            # Encrypt lowercase characters in plain text
-            else:
-                result += chr((ord(char) + s - 97) % 26 + 97)
-        return result
-
-    # # check the above function
-    # text = "CEASER CIPHER DEMO"
-    # s = 4
-    #
-    # print("Plain Text : " + text)
-    # print("Shift pattern : " + str(s))
-    # print("Cipher: " + ceaser_cipher(text, s))
-
-    def decrypt_ceaser_cipher(self, message, LETTERS):
-        for key in range(len(LETTERS)):
-            translated = ''
-            for symbol in message:
-                if symbol in LETTERS:
-                    num = LETTERS.find(symbol)
-                    num = num - key
-                    if num < 0:
-                        num = num + len(LETTERS)
-                    translated = translated + LETTERS[num]
-                else:
-                    translated = translated + symbol
-            print('Hacking key #%s: %s' % (key, translated))
-
-    # decrypt_ceaser_cipher('GIEWIVrGMTLIVrHIQS','ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    def decrypt(self):
+        pass
 
 
-class multiplication(CIPHER):
-
-    def encrypt_multiplicative(self, key, cipher):
-        cipher = cipher.lower()
+class reverse(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
         encrypted_cipher = ''
-        for a in cipher:
-            if a != ' ':
-                temp = ((ord(a) - 97) * key) % 26
-                encrypted_cipher += chr(temp + 97)
+        i = len(text) - 1
+
+        while i >= 0:
+            encrypted_cipher += text[i]
+            i -= 1
+        return encrypted_cipher
+
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        decrypted_cipher = ''
+        i = len(text) - 1
+
+        while i >= 0:
+            decrypted_cipher += text[i]
+            i -= 1
+        return decrypted_cipher
+
+
+class ceaser(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
+        encrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr((ord(char) + key - 97) % 26 + 97)
             else:
                 encrypted_cipher += ' '
         return encrypted_cipher
 
-    def decrypt_multiplicative(self, key, cipher):
-        cipher = cipher.lower()
+    def decrypt(self):
+        self.decrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
         decrypted_cipher = ''
-
-        for a in cipher:
-            if a != ' ':
+        for char in text:
+            if char != ' ':
                 for t1, t2 in enumerate(ascii_lowercase):
-                    temp = (t1 * key) % 26
-                    if (ord(a) - 97) == temp:
+                    temp = (t1 + key) % 26
+                    if (ord(char) - 97) == temp:
                         decrypted_cipher += t2
                     else:
                         continue
@@ -95,85 +126,345 @@ class multiplication(CIPHER):
         return decrypted_cipher
 
 
-class affine(CIPHER):
+class multiplicative(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
+        encrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr(((ord(char) - 97) * key) % 26 + 97)
+            else:
+                encrypted_cipher += ' '
+        return encrypted_cipher
 
-    def affine(self):
-        class Affine(object):
-            DIE = 128
-            KEY = (7, 3, 55)
+    def decrypt(self):
+        self.decrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
+        decrypted_cipher = ''
 
-            def __init__(self):
-                pass
-
-            def encryptChar(self, char):
-                K1, K2, kI = self.KEY
-                return chr((K1 * ord(char) + K2) % self.DIE)
-
-            def encrypt(self, string):
-                return "".join(map(self.encryptChar, string))
-
-            def decryptChar(self, char):
-                K1, K2, KI = self.KEY
-                return chr(KI * (ord(char) - K2) % self.DIE)
-
-            def decrypt(self, string):
-                return "".join(map(self.decryptChar, string))
-
-        affine = Affine()
-
-        # print(affine.encrypt('Affine Cipher'))
-        # print(affine.decrypt('*18?FMT'))
+        for char in text:
+            if char != ' ':
+                for t1, t2 in enumerate(ascii_lowercase):
+                    temp = (t1 * key) % 26
+                    if (ord(char) - 97) == temp:
+                        decrypted_cipher += t2
+                    else:
+                        continue
+            else:
+                decrypted_cipher += ' '
+        return decrypted_cipher
 
 
-class base64(CIPHER):
+class affine(Input):
+    def shift_input(self):
+        shift = int(input("Enter the first key: "))
+        return shift
 
-    def base64(self):
-        import base64
+    def two_shift_input(self):
+        shift = int(input("Enter the second key: "))
+        return shift
 
-        sample_string = "GeeksForGeeks is the best"
-        sample_string_bytes = sample_string.encode("ascii")
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
+        key1 = self.shift_input()
+        key2 = self.two_shift_input()
+        encrypted_cipher = ''
 
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr((key1 * ord(char) + key2) % 26)
+            else:
+                encrypted_cipher += ' '
+        return encrypted_cipher
+
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        key2 = self.two_shift_input()
+        key3 = pow(key2, -1, 26)
+        decrypted_cipher = ''
+
+        for char in text:
+            if char != ' ':
+                decrypted_cipher += chr((key3 * ord(char) - key2) % 26)
+            else:
+                decrypted_cipher += ' '
+        return decrypted_cipher
+
+
+class basesixfour(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
+
+        sample_string_bytes = text.encode("ascii")
         base64_bytes = base64.b64encode(sample_string_bytes)
-        base64_string = base64_bytes.decode("ascii")
+        encrypted_cipher = base64_bytes.decode("ascii")
+        return encrypted_cipher
 
-        print(f"Encoded string: {base64_string}")
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
 
-        base64_string = " R2Vla3NGb3JHZWVrcyBpcyB0aGUgYmVzdA =="
-        base64_bytes = base64_string.encode("ascii")
-
-        sample_string_bytes = base64.b64decode(base64_bytes)
-        sample_string = sample_string_bytes.decode("ascii")
-
-        print(f"Decoded string: {sample_string}")
+        sample_string_bytes = base64.b64decode(text)
+        decrypted_cipher = sample_string_bytes.decode("ascii")
+        return decrypted_cipher
 
 
-class transposition(CIPHER):
-
-    def encryptMessage(self, key, message):
-        ciphertext = [''] * key
-
+class transposition(Input):
+    def encrypt(self):
+        self.encrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
+        encrypted_cipher = [''] * key
         for col in range(key):
-            position = col
-            while position < len(message):
-                ciphertext[col] += message[position]
-                position += key
-        return ''.join(ciphertext)  # Cipher text
+            pointer = col
+            while pointer < len(text):
+                encrypted_cipher[col] += text[pointer]
+                pointer += key
+        return ''.join(encrypted_cipher)
 
-    def decryptMessage(self, key, message):
-        numOfColumns = math.ceil(len(message) / key)
+    def decrypt(self):
+        self.decrypt_input()
+        self.shift_input()
+        text = self.msg
+        key = self.shift
 
-        numOfRows = key
-
-        numOfShadedBoxes = (numOfColumns * numOfRows) - len(message)
-
-        plaintext = [''] * numOfColumns
-
+        numCols = math.ceil(len(text) / key)
+        numRows = key
+        numShadedBoxes = (numCols * numRows) - len(text)
+        decrypted_cipher = [""] * numCols
         col = 0
         row = 0
-        for symbol in message:
-            plaintext[col] += symbol
-            col += 1  # point to next column
-            if (col == numOfColumns) or (col == numOfColumns - 1 and row >= numOfRows - numOfShadedBoxes):
+
+        for symbol in text:
+            decrypted_cipher[col] += symbol
+            col += 1
+
+            if (
+                    (col == numCols)
+                    or (col == numCols - 1)
+                    and (row >= numRows - numShadedBoxes)
+            ):
                 col = 0
                 row += 1
-        return ''.join(plaintext)
+
+        return ''.join(decrypted_cipher)
+
+
+class rot13(ceaser):
+    def encrypt(self):
+        self.encrypt_input()
+        text = self.msg
+        key = 13
+        encrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                encrypted_cipher += chr((ord(char) + key - 97) % 26 + 97)
+            else:
+                encrypted_cipher += ' '
+        return encrypted_cipher
+
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        key = 13
+        decrypted_cipher = ''
+        for char in text:
+            if char != ' ':
+                for t1, t2 in enumerate(ascii_lowercase):
+                    temp = (t1 + key) % 26
+                    if (ord(char) - 97) == temp:
+                        decrypted_cipher += t2
+                    else:
+                        continue
+            else:
+                decrypted_cipher += ' '
+        return decrypted_cipher
+
+
+class sms(Input):
+    keypad = {
+        1: ' ', 2: 'abc', 3: 'def', 4: 'ghi', 5: 'jkl', 6: 'mno', 7: 'pqrs', 8: 'tuv', 9: 'wxyz'
+    }
+
+    def encrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        encrypted_cipher = ''
+        for i in range(len(text)):
+            for j in self.keypad:
+                for x in range(len(self.keypad[j])):
+                    if text[i] == self.keypad[j][x]:
+                        for temp in range(x + 1):
+                            encrypted_cipher += str(j)
+        return encrypted_cipher
+
+    def decrypt(self):
+        self.decrypt_input()
+        text = self.msg
+        decrypted_cipher = ''
+        count = 0
+        for i in range(len(text)):
+            for j in self.keypad:
+                if j != 7 and j != 9:
+                    if int(text[i]) == j:
+                        if i == len(text) - 1:
+                            if int(text[i]) == j and count < 2:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                        else:
+                            if int(text[i + 1]) == j and count < 2:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                    else:
+                        continue
+                else:
+                    if int(text[i]) == j:
+                        if i == len(text) - 1:
+                            if int(text[i]) == j and count < 3:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                        else:
+                            if int(text[i + 1]) == j and count < 3:
+                                count += 1
+                                continue
+                            else:
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
+                    else:
+                        continue
+        return decrypted_cipher
+
+
+def type_input():
+    global type
+    print("""Select your input type:
+          1. CLI
+          2. Using files""")
+    type = int(input("Select your choice(1 or 2): "))
+
+
+global type
+
+
+def selection():
+    print("""Select if you want to encrypt/decrypt: 
+          1. Encrypt
+          2. Decrypt""")
+    select = int(input("Enter your choice(1 or 2): "))
+    return select
+
+
+def error():
+    print("Incorrect selection")
+
+
+def encrypt_print(text):
+    if type == 1:
+        print("Encrypted String: " + text)
+    elif type == 2:
+        with open("output.txt", 'w') as outfile:
+            outfile.write("Encrypted String: " + text)
+            outfile.close()
+    else:
+        error()
+
+
+def decrypt_print(text):
+    if type == 1:
+        print("Decrypted String: " + text)
+    elif type == 2:
+        with open("output.txt", 'w') as outfile:
+            outfile.write("Decrypted String: " + text)
+            outfile.close()
+    else:
+        error()
+
+
+def run(temp):
+    select = selection()
+    if select == 1:
+        encrypt_print(temp.encrypt())
+    elif select == 2:
+        decrypt_print(temp.decrypt())
+    else:
+        error()
+
+
+def __main__():
+    logo = text2art("E N I G M A", font="tarty1")
+    print(logo)
+
+    type_input()
+    print("""Select any one of the following ciphers:
+          1. Reverse cipher
+          2. Ceaser cipher
+          3. Multiplicative cipher
+          4. Affine cipher
+          5. Base64 cipher
+          6. Transposition cipher
+          7. Rot13 cipher
+          8. SMS Phone Tap cipher
+          9. Exit""")
+    choice = int(input("Enter your choice(1 - 8): "))
+
+    while choice != 9:
+        match choice:
+            case 1:
+                temp = reverse('', '')
+                run(temp)
+            case 2:
+                temp = ceaser('', '')
+                run(temp)
+            case 3:
+                temp = multiplicative('', '')
+                run(temp)
+            case 4:
+                temp = affine('', '')
+                run(temp)
+            case 5:
+                temp = basesixfour('', '')
+                run(temp)
+            case 6:
+                temp = transposition('', '')
+                run(temp)
+            case 7:
+                temp = rot13('', '')
+                run(temp)
+            case 8:
+                temp = sms('', '')
+                run(temp)
+            case _:
+                error()
+
+        print("""Select any one of the following ciphers:
+                  1. Reverse cipher
+                  2. Ceaser cipher
+                  3. Multiplicative cipher
+                  4. Affine cipher
+                  5. Base64 cipher
+                  6. Transposition cipher
+                  7. Rot13 cipher
+                  8. SMS Phone Tap cipher
+                  9. Exit""")
+        choice = int(input("Enter your choice(1 - 8): "))
+
+
+__main__()
