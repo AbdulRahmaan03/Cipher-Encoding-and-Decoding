@@ -319,12 +319,8 @@ class sms(Input):
                     if j != 7 and j != 9:
                         if int(text[i]) == j:
                             if i == len(text) - 1:
-                                if int(text[i]) == j and count < 2:
-                                    count += 1
-                                    continue
-                                else:
-                                    decrypted_cipher += self.keypad[j][count]
-                                    count = 0
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
                             else:
                                 if text[i + 1] != ' ':
                                     if int(text[i + 1]) == j and count < 2:
@@ -341,12 +337,8 @@ class sms(Input):
                     else:
                         if int(text[i]) == j:
                             if i == len(text) - 1:
-                                if int(text[i]) == j and count < 3:
-                                    count += 1
-                                    continue
-                                else:
-                                    decrypted_cipher += self.keypad[j][count]
-                                    count = 0
+                                decrypted_cipher += self.keypad[j][count]
+                                count = 0
                             else:
                                 if text[i + 1] != ' ':
                                     if int(text[i + 1]) == j and count < 3:
@@ -392,6 +384,7 @@ def encrypt_print(text):
     if type == 1:
         print("Encrypted String: " + text)
     elif type == 2:
+        print("\n\nCheck output.txt for the encrypted string.\n\n")
         with open("output.txt", 'w') as outfile:
             outfile.write("Encrypted String: " + text)
             outfile.close()
@@ -403,6 +396,7 @@ def decrypt_print(text):
     if type == 1:
         print("Decrypted String: " + text)
     elif type == 2:
+        print("\n\nCheck output.txt for the decrypted string.\n\n")
         with open("output.txt", 'w') as outfile:
             outfile.write("Decrypted String: " + text)
             outfile.close()
