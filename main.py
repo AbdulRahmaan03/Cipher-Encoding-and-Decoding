@@ -305,6 +305,7 @@ class sms(Input):
                     if text[i] == self.keypad[j][x]:
                         for temp in range(x + 1):
                             encrypted_cipher += str(j)
+                        encrypted_cipher += ' '
         return encrypted_cipher
 
     def decrypt(self):
@@ -314,42 +315,53 @@ class sms(Input):
         count = 0
         for i in range(len(text)):
             for j in self.keypad:
-                if j != 7 and j != 9:
-                    if int(text[i]) == j:
-                        if i == len(text) - 1:
-                            if int(text[i]) == j and count < 2:
-                                count += 1
-                                continue
+                if text[i] != ' ':
+                    if j != 7 and j != 9:
+                        if int(text[i]) == j:
+                            if i == len(text) - 1:
+                                if int(text[i]) == j and count < 2:
+                                    count += 1
+                                    continue
+                                else:
+                                    decrypted_cipher += self.keypad[j][count]
+                                    count = 0
                             else:
-                                decrypted_cipher += self.keypad[j][count]
-                                count = 0
+                                if text[i + 1] != ' ':
+                                    if int(text[i + 1]) == j and count < 2:
+                                        count += 1
+                                        continue
+                                    else:
+                                        decrypted_cipher += self.keypad[j][count]
+                                        count = 0
+                                else:
+                                    decrypted_cipher += self.keypad[j][count]
+                                    count = 0
                         else:
-                            if int(text[i + 1]) == j and count < 2:
-                                count += 1
-                                continue
-                            else:
-                                decrypted_cipher += self.keypad[j][count]
-                                count = 0
+                            continue
                     else:
-                        continue
+                        if int(text[i]) == j:
+                            if i == len(text) - 1:
+                                if int(text[i]) == j and count < 3:
+                                    count += 1
+                                    continue
+                                else:
+                                    decrypted_cipher += self.keypad[j][count]
+                                    count = 0
+                            else:
+                                if text[i + 1] != ' ':
+                                    if int(text[i + 1]) == j and count < 3:
+                                        count += 1
+                                        continue
+                                    else:
+                                        decrypted_cipher += self.keypad[j][count]
+                                        count = 0
+                                else:
+                                    decrypted_cipher += self.keypad[j][count]
+                                    count = 0
+                        else:
+                            continue
                 else:
-                    if int(text[i]) == j:
-                        if i == len(text) - 1:
-                            if int(text[i]) == j and count < 3:
-                                count += 1
-                                continue
-                            else:
-                                decrypted_cipher += self.keypad[j][count]
-                                count = 0
-                        else:
-                            if int(text[i + 1]) == j and count < 3:
-                                count += 1
-                                continue
-                            else:
-                                decrypted_cipher += self.keypad[j][count]
-                                count = 0
-                    else:
-                        continue
+                    count = 0
         return decrypted_cipher
 
 
