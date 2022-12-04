@@ -296,7 +296,7 @@ class sms(Input):
     }
 
     def encrypt(self):
-        self.decrypt_input()
+        self.encrypt_input()
         text = self.msg
         encrypted_cipher = ''
         for i in range(len(text)):
